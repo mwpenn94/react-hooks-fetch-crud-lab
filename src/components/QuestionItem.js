@@ -1,6 +1,6 @@
 import React from "react";
 
-function QuestionItem({ question, deleteQuestion, changeCorrectAnswer }) {
+function QuestionItem({ question, onDeleteClick, onAnswerChange }) {
   const { id, prompt, answers, correctIndex } = question;
 
   const options = answers.map((answer, index) => (
@@ -9,12 +9,12 @@ function QuestionItem({ question, deleteQuestion, changeCorrectAnswer }) {
     </option>
   ));
 
-  function handleDefeat() {
-    return deleteQuestion(question.id);
+  function handleDeleteClick() {
+    onDeleteClick(id);
   }
 
-  function handleChangeCorrectAnswer(e) {
-    return changeCorrectAnswer(question.id, e.target.value)
+  function handleAnswerChange(event) {
+    onAnswerChange(id, parseInt(event.target.value));
   }
 
   return (
@@ -23,9 +23,11 @@ function QuestionItem({ question, deleteQuestion, changeCorrectAnswer }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select onChange={handleChangeCorrectAnswer} defaultValue={correctIndex}>{options}</select>
+        <select defaultValue={correctIndex} onChange={handleAnswerChange}>
+          {options}
+        </select>
       </label>
-      <button onClick={handleDefeat}>Delete Question</button>
+      <button onClick={handleDeleteClick}>Delete Question</button>
     </li>
   );
 }
